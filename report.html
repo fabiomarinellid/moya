@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moya Representações - Pedidos</title>
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+        }
+        header {
+            padding: 10px;
+        }
+        h1 {
+            text-align: right;
+            margin: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #000;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tfoot {
+            font-weight: bold;
+        }
+        @media print {
+            /* Esconda o botão de impressão na impressão */
+            button#print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main id="conteudo">
+        <!-- O conteúdo da página será inserido aqui dinamicamente -->
+    </main>
+	<button id="print-button" onclick="imprimirPagina()">Imprimir Relatório</button>
+
+    <script>
+        // Função para imprimir a página
+        function imprimirPagina() {
+            window.print();
+        }
+    </script>
+    <script>
+        // Função para obter os parâmetros da URL
+        function obterParametrosDaURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const parametro1 = urlParams.get("nome");
+            const parametro2 = urlParams.get("filtro");
+			const parametro3 = urlParams.get("tabela");
+			const parametro4 = urlParams.get("logo");
+
+            return { parametro1, parametro2, parametro3, parametro4 };
+        }
+
+        // Função para carregar e exibir o conteúdo com base nos parâmetros da URL
+        function carregarPaginaComParametros() {
+            const parametros = obterParametrosDaURL();
+
+            // Verifique se os parâmetros necessários estão presentes
+            if (!parametros.parametro1 || !parametros.parametro2) {
+                document.getElementById("conteudo").innerHTML = "<p>Parâmetros ausentes. Certifique-se de passar parametro1 e parametro2 na URL.</p>";
+                return;
+            }
+
+            // Construa o conteúdo com base nos parâmetros
+            const conteudo = `
+                
+				<header>
+					<div style="float: left;">
+						<img src="${parametros.parametro4}" alt="Moya Representações" width="250">
+					</div>
+					<div style="text-align: center;">
+						<h2>${parametros.parametro1}</h2>
+						<p>${parametros.parametro2}</p>
+					</div>
+					<div style="clear: both;"></div>
+				</header>
+					${parametros.parametro3}
+            `;
+
+            // Insira o conteúdo gerado na página
+            document.getElementById("conteudo").innerHTML = conteudo;
+        }
+
+        // Chame a função para carregar a página com base nos parâmetros da URL
+        carregarPaginaComParametros();
+    </script>
+</body>
+</html>
